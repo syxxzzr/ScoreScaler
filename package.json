@@ -1,0 +1,13 @@
+{
+  "name": "scorescaler",
+  "version": "0.1.0",
+  "description": "",
+  "main": "ScoreScaler.js",
+  "scripts": {
+    "test": "node example.js"
+  },
+  "keywords": [],
+  "author": "syxxzzr",
+  "license": "MIT",
+  "type": "module"
+}
