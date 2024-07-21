@@ -76,8 +76,24 @@ export default class ScaleScore {
                 return ((section[0] - section[1]) / this.standard[0][index]) * (percent_rank - ratio) + section[1];  // 进行分数映射
             }
         }
+    }
 
-        /////
+    /**
+     * 为源数据集排序
+     * @private
+     */
+    _sort() {
+        if (!this.is_sorted) {  // 未排序则对分数进行排序
+            if (this.score_all.length <= this.standard.length) {
+                throw new RangeError("The dataset is too small to scale score.")  // 数据集过小,无法进行赋分操作
+            }
+
+            this.score_all.sort(function (a, b) {
+                return a - b;
+            });
+
+            this.is_sorted = true;
+        }
     }
 
     /**
@@ -107,17 +123,7 @@ export default class ScaleScore {
             data = [data];  // 参数归一化
         }
 
-        if (!this.is_sorted) {  // 未排序则对分数进行排序
-            if (this.score_all.length <= this.standard.length) {
-                throw new RangeError("The dataset is too small to scale score.")  // 数据集过小,无法进行赋分操作
-            }
-
-            this.score_all.sort(function (a, b) {
-                return a - b;
-            });
-
-            this.is_sorted = true;
-        }
+        this._sort();  // 对原成绩排序
 
         let output = [];
         for (const raw_score of data) {
@@ -126,4 +132,25 @@ export default class ScaleScore {
 
         return is_number ? output[0] : output;
     };
+
+    /**
+     * 为所有原成绩赋分
+     * @return {Object} 原成绩-赋分对照表
+     */
+    scale_all() {
+        let table = {};  // 原成绩-赋分对照表
+
+        this._sort();  // 对原成绩排序
+
+        let last_score = null;
+        for (const score of this.score_all) {
+            if (score !== last_score)  // 防止对相同分数进行多次赋分运算
+                table[score] = this._scale_score(score);
+
+            else
+                continue;
+        }
+
+        return table;
+    }
 }

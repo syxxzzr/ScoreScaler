@@ -54,6 +54,14 @@ scale_score.update( data );
 
 添加赋分的原始分参考数据集。其中`data`为要被添加的原始分数据集，应为`number`或`Array`类型。
 
+您还可以使用
+
+```javascript
+scale_score.scale_all();
+```
+
+获得所有原成绩赋分后的原成绩-赋分对照表，输出的数据类型为`Object()`
+
 最后，可使用
 
 ```javascript
