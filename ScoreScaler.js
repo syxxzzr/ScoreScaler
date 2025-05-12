@@ -28,6 +28,8 @@ export default class ScaleScore {
         this.score_all = [];
         this.score_section = [];
 
+        this.min_score_count = 1 / Math.min(...this.standard[0]);
+
         this.is_reprocessed = false;
         this.is_sorted = false;
     };
@@ -60,7 +62,7 @@ export default class ScaleScore {
         if (this.is_sorted)
             return;  // 已排序则不再重新排序
 
-        if (this.score_all.length < 1 / this.standard[0].min) {
+        if (this.score_all.length < this.min_score_count) {
             throw new RangeError("The dataset is too small to scale score.")  // 数据集过小,无法进行赋分操作
         }
 
@@ -68,14 +70,11 @@ export default class ScaleScore {
             return a - b;
         });
         this.is_sorted = true;
+        this.is_reprocessed = false;
 
         // 重新计算不同分数段的分数区间
-        if (reprocess_score_section) {
+        if (reprocess_score_section)
             this._reprocess_score_section();
-            this.is_reprocessed = true;
-        }
-        else
-            this.is_reprocessed = false;
     }
 
     /**
@@ -86,6 +85,9 @@ export default class ScaleScore {
         if (!this.is_sorted)
             this._sort();
 
+        if (this.is_reprocessed)
+            return;
+
         this.score_section = [];
         let ratio = 1;
         for (const ratio_delta of this.standard[0]) {
@@ -94,6 +96,7 @@ export default class ScaleScore {
             let section_start = this.score_all[parseInt(this.score_all.length * ratio) - 1];
             this.score_section.push([section_start, section_end]);
         }
+        this.is_reprocessed = true;
     }
 
     /**
