@@ -41,6 +41,10 @@ export default class ScaleScore {
      * @private
      */
     _scale_score(raw_score) {
+        if (this.score_all.length < this.min_score_count) {
+            throw new RangeError("The dataset is too small to scale score.")  // 数据集过小,无法进行赋分操作
+        }
+
         if (!this.score_all.includes(raw_score))
             throw new RangeError("Raw score not included in the score data.");  // 原数据不在数据集中
 
@@ -61,10 +65,6 @@ export default class ScaleScore {
     _sort(reprocess_score_section = true) {
         if (this.is_sorted)
             return;  // 已排序则不再重新排序
-
-        if (this.score_all.length < this.min_score_count) {
-            throw new RangeError("The dataset is too small to scale score.")  // 数据集过小,无法进行赋分操作
-        }
 
         this.score_all.sort(function (a, b) {
             return a - b;
