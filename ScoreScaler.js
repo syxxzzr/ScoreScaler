@@ -83,7 +83,7 @@ export default class ScaleScore {
      */
     _reprocess_score_section() {
         if (!this.is_sorted)
-            this._sort();
+            this._sort(false);
 
         if (this.is_reprocessed)
             return;
