@@ -111,6 +111,7 @@ export default class ScaleScore {
             this.score_all = this.score_all.concat(data);
 
         this.is_sorted = false;
+        this.is_reprocessed = false;
     };
 
     /**
