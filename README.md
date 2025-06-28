@@ -17,19 +17,19 @@
 您可以使用
 
 ```javascript
-import ScaleScore from "./ScoreScaler.js"
+import ScaleScore from "./ScoreScaler.ts"
 ```
 
 或 在`Node.js`开发环境下使用
 
 ```javascript
-require("./ScoreScaler.js");
+require("./ScoreScaler.ts");
 ```
 
 的方法引入赋分助手。同时，您可以使用
 
 ```javascript
-import {GENERAL_STANDARD} from "./ScoreScaler.js";
+import {GENERAL_STANDARD} from "./ScoreScaler.ts";
 ```
 
 方法引入程序内自带的，适用于中国绝大多数采用新高考的省区的通用赋分标准。
